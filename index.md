@@ -21,11 +21,13 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 1. Obtener información de herramientas a integrar.
     - Para poder integrar tekton con ibm toolchain sus plantillas yml deben estar versionadas en un repositorio por lo cual puede crear uno de la siguiente manera:
-        - Ingrese [aqui](https://github.ibm.com/new)
+        - Ingrese [aqui](https://github.com/new)
         - Seleccionar un propietario.
         - Ingresar un nombre para el repositorio.
         - Seleccionar si desea que sea publico o privado.
         - dar click en *Create repository*
+
+![create repo](images/createrepo.gif "create repo")
 
     - Para poder integrar slack a ibm toolchain vamos a requerir crear una aplicación dentro de slack de la siguiente forma:
         - Ingrese [aqui](https://api.slack.com/apps)
