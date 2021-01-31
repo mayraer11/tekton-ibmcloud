@@ -90,6 +90,8 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 1. Configurando IBM Delivery Pipeline.
 
+:::image type="content" source="images/tekton.png" alt-text="Flow tekton":::
+
     - Creación de EventListener
 
         ```yml
