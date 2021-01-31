@@ -18,6 +18,7 @@ Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo 
 El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 #### **Pasos**
+
 1. Obtener información de herramientas a integrar.
     - Para poder integrar tekton con ibm toolchain sus plantillas yml deben estar versionadas en un repositorio por lo cual puede crear uno de la siguiente manera:
         - Ingrese [aqui](https://github.ibm.com/new)
@@ -88,11 +89,18 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Seleccione Tekton como Tipo de conducto.
         - Dar click en el boton Crear Integración.
 
+
+Tekton en IBM Delivery Pipeline
+
+Como podemos visualizar en el siguiente imagen tekton nos permitira crear recursos dentro del cluster publico gestionado por IBM para poder ejecutar los pasos indicados en el pipeline.
+
+![Flow Tekton](images/tekton.png?raw=true "Flow Tekton")
+
+Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y versionados dentro de una carpeta tekton en el repositorio creado anteriormente.
+
 1. Configurando IBM Delivery Pipeline.
 
-:::image type="content" source="images/tekton.png" alt-text="Flow tekton":::
-
-    - Creación de EventListener
+    - Creación de EventListener: Permite procesar eventos entrantes de forma declarativa.
 
         ```yml
         apiVersion: tekton.dev/v1beta1
@@ -107,7 +115,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
                 name: triggertemplate
         ```
 
-    - Creación de Trigger binding
+    - Creación de Trigger binding: Permite la capturar campos de un evento y almacenarlos como parametros.
         
         ```yml
         ApiVersion: tekton.dev/v1beta1
@@ -120,7 +128,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
               value: URL
         ```
 
-    - Creacion de Trigger Template
+    - Creacion de Trigger Template: Es un modelo base que puede ser reutilizable.
 
         
         ```yml
@@ -163,7 +171,6 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
     - Creación de Task de clonación de repositorio
 
-
         ```yml
         apiVersion: tekton.dev/v1beta1
                 kind: Task
@@ -198,7 +205,6 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
     - Creación de Task de Contrucción (Build)
 
-    
         ```yml
         ---
                 apiVersion: tekton.dev/v1beta1
