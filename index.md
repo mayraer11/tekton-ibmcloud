@@ -27,7 +27,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Seleccionar si desea que sea publico o privado.
         - dar click en *Create repository*
 
-![create repo](images/createrepo.gif "create repo")
+![create repo](images/createrepo.gif)
 
     - Para poder integrar slack a ibm toolchain vamos a requerir crear una aplicación dentro de slack de la siguiente forma:
         - Ingrese [aqui](https://api.slack.com/apps)
