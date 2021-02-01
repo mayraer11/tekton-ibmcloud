@@ -16,7 +16,7 @@ metadata:
 spec:
   params:
     - name: repository
-      value: $(params.repository)
+      value: "https://github.com/mayraer11/tekton-ibmcloud"
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
