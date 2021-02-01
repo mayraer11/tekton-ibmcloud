@@ -16,7 +16,7 @@ metadata:
 spec:
   params:
     - name: repository
-      value: $(body.repository.clone_url)
+      value: $(event.pull_request.base.ref)
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
