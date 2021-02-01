@@ -64,9 +64,6 @@ kind: Task
 metadata:
   name: terraform-task
 spec:
-  params:
-    - name: repository
-      description: Repositorio GIT
   workspaces:
   - name: task-pvc
     mountPath: /workspace
