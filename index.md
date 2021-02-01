@@ -72,7 +72,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
     - Github
         - Dar click en *añadir herramienta*
         - Buscar *github* y seleccionar.
-        - Dar click en el boton autorizar y Aceptar.
+        - Dar click en el boton autorizar IBM-Cloud.
         - En el Tipo de Repositorio seleccionar *Existente*.
         - Seleccionar la URL de nuestro repositorio (creado en el paso 1).
         - Marcar ambos checks para habilitar el seguimiento.
@@ -102,6 +102,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Seleccione Tekton como Tipo de conducto.
         - Dar click en el boton Crear Integración.
 
+<img src="images/toolchain.png" width="700" height="150">
 
 Tekton en IBM Delivery Pipeline
 
