@@ -74,8 +74,8 @@ spec:
       env:
         - name: REPOSITORY
           valueFrom:
-              configMapKeyRef:
-                name: environment-properties
+              secretKeyRef:
+                name: secure-properties
                 key: repository
         - name: BRANCH
           valueFrom:
