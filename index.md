@@ -48,6 +48,15 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
     - Ingrese un nombre para el repositorio de claves
     - Seleccionar un grupo de recursos.
     - Dar click en crear.
+    - <img src="images/createkeyprotect.gif" width="400" height="300">
+
+1. Creación de IBM Schematics
+    - Ingrese [aqui](https://cloud.ibm.com/schematics/workspaces/create)
+    - Ingrese nombre para espacio de trabajo.
+    - Seleccione el grupo de recursos.
+    - Seleccione la ubicación (Region).
+    - De click en crear
+    - <img src="images/createschematics.gif" width="400" height="300">
 
 1. Creación de IBM ToolChain.
 
@@ -57,6 +66,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
     - Seleccione una region
     - Seleccione un grupo de recursos
     - De click en crear
+    - <img src="images/createkeyprotect.gif" width="400" height="300">
 
 1. Añadiendo herramientas a IBM ToolChain
     - Github
@@ -172,207 +182,8 @@ Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y
                   value: $(params.repository)
         ```
 
-    - Creación de Task de clonación de repositorio
-
-        ```yml
-        apiVersion: tekton.dev/v1beta1
-                kind: Task
-                metadata:
-                  name: clone-task
-                spec:
-                  params:
-                    - name: repository
-                      description: Repositorio GIT
-                  workspaces:
-                  - name: task-pvc
-                    mountPath: /workspace   
-                  steps:
-                    - name: clone-repo
-                      image: alpine/git:v2.26.2
-                      workingDir: workspace
-                      env:
-                        - name: REPOSITORY
-                          value: $(params.repository)
-                        - name: BRANCH
-                          valueFrom:
-                              configMapKeyRef:
-                                name: environment-properties
-                                key: branch
-                      command: ["/bin/sh", "-c"]
-                      args:
-                        - set -e -o pipefail;
-                          echo "Cloning $REPOSITORY";
-                          rm -rf app;          
-                          git clone -q -b $BRANCH $REPOSITORY;
-        ```
-
-    - Creación de Task de Contrucción (Build)
-
-        ```yml
-        ---
-                apiVersion: tekton.dev/v1beta1
-                kind: Task
-                metadata:
-                  name: build-task
-                spec:
-                  params:
-                    - name: repository
-                      description: Repositorio GIT
-                  workspaces:
-                  - name: task-pvc
-                    mountPath: /artifacts   
-                  steps:          
-                    - name: build
-                      image: ibmcom/pipeline-base-image:2.11
-                      workingDir: /
-                      env:
-                        - name: HOME
-                          value: "/root"
-                      command: ["/bin/bash", "-c"]
-                      args:
-                        - cd /workspace;
-                          cd app/client;
-                          npm install;
-                          npm run build;
-                    - name: publish-artifact
-                      image: ibmcom/pipeline-base-image:2.11
-                      workingDir: /
-                      env:
-                        - name: HOME
-                          value: "/root"
-                      command: ["/bin/bash", "-c"]
-                      args:
-                        - cp -r workspace artifacts;
-        ```
-    
-
-    - Creación de Task de Despliegue (Deploy)
-
-        ```yml
-        ---
-        apiVersion: tekton.dev/v1beta1
-        kind: Task
-        metadata:
-          name: deploy-task
-        spec:
-          workspaces:
-          - name: task-pvc
-            mountPath: /artifacts
-          steps:
-            - name: deploy-cf-app
-              image: ibmcom/pipeline-base-image:2.11
-              workingDir: /artifacts/workspace/app
-              env:
-                - name: CF_APP
-                  valueFrom:
-                      configMapKeyRef:
-                        name: environment-properties
-                        key: cf-app
-                - name: CF_ORG
-                  valueFrom:
-                      configMapKeyRef:
-                        name: environment-properties
-                        key: cf-org
-                - name: CF_SPACE
-                  valueFrom:
-                      configMapKeyRef:
-                        name: environment-properties
-                        key: cf-space
-                - name: CF_REGION
-                  valueFrom:
-                      configMapKeyRef:
-                        name: environment-properties
-                        key: cf-region
-                - name: IBM_CLOUD_API
-                  valueFrom:
-                      configMapKeyRef:
-                        name: environment-properties
-                        key: ibm-cloud-api
-                - name: CF_API
-                  valueFrom:
-                      configMapKeyRef:
-                        name: environment-properties
-                        key: cf-api
-                - name: PIPELINE_BLUEMIX_API_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: secure-properties
-                      key: bluemix-api-key
-                - name: HOME
-                  value: "/root"
-              script: |
-                #!/bin/bash
-                ls
-                export CF_EXEC="ibmcloud cf"
-                ibmcloud config --check-version false
-                ibmcloud login -a $IBM_CLOUD_API -r $CF_REGION --apikey $PIPELINE_BLUEMIX_API_KEY
-                ibmcloud target --cf-api $CF_API -o "$CF_ORG" -s "$CF_SPACE"
-        
-                if ! cf app "$CF_APP"; then  
-                  cf push "$CF_APP"
-                else
-                  OLD_CF_APP="${CF_APP}-OLD-$(date +"%s")"
-                  rollback() {
-                    set +e  
-                    if cf app "$OLD_CF_APP"; then
-                      cf logs "$CF_APP" --recent
-                      cf delete "$CF_APP" -f
-                      cf rename "$OLD_CF_APP" "$CF_APP"
-                    fi
-                    exit 1
-                  }
-                  set -e
-                  trap rollback ERR
-                  cf rename "$CF_APP" "$OLD_CF_APP"
-                  cf push "$CF_APP"
-                  cf delete "$OLD_CF_APP" -f
-                fi
-                export CF_APP_NAME="$CF_APP"
-                export APP_URL=http://$(cf app $CF_APP_NAME | grep -e urls: -e routes: | awk '{print $2}')
-        ```
-
-
-    - Creación de Pipeline
-
-        ```yml
-        apiVersion: tekton.dev/v1beta1
-        kind: Pipeline
-        metadata:
-          name: pipeline
-        spec:
-          params:
-            - name: repository
-              description: Repositorio GIT
-          workspaces:
-          - name: pipeline-pvc
-          tasks:
-            - name: pipeline-clone-task
-              taskRef:
-                name: clone-task
-              params:
-                - name: repository
-                  value: $(params.repository)
-              workspaces:
-              - name: task-pvc
-                workspace: pipeline-pvc
-            - name: pipeline-build-task
-              runAfter: [pipeline-clone-task]
-              taskRef:
-                name: build-task
-              params:
-                - name: repository
-                  value: $(params.repository)
-              workspaces:
-              - name: task-pvc
-                workspace: pipeline-pvc
-            - name: pipeline-deploy-task
-              runAfter: [pipeline-build-task]
-              taskRef:
-                name: deploy-task
-              workspaces:
-              - name: task-pvc
-                workspace: pipeline-pvc
-        ```
 
 #### **Resumen**
-Este tutorial le ha ayudado a comprender y configurar su primer pipeline con IBM DevOps Ecosystem, comprendiendo los compenentes necesarios para trabajar con tekton, permitiendo asi agilizar sus despliegues.
+Este tutorial le ha ayudado a comprender y configurar su primer pipeline con IBM DevOps Ecosystem, comprendiendo los compenentes necesarios para trabajar con tekton, permitiendo asi agilizar sus despliegues de infraestructura con terraform.
+
+Aqui podra encontrar los archivos creados durante la ejecución de este tutorial.
