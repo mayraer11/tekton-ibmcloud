@@ -86,7 +86,6 @@ spec:
       args:
         - set -e -o pipefail;
           echo "Cloning $REPOSITORY";
-          rm -rf app;          
           git clone -q -b $BRANCH $REPOSITORY;
     - name: terraform-plan
       image: ibmcom/pipeline-base-image:2.11
@@ -106,6 +105,9 @@ spec:
           value: "/root"
       script: |
         #!/bin/bash
+        ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
+        echo "ibmcloud terraform plan --id $WORKSPACE"
+        ibmcloud terraform plan -id $WORKSPACE --json
     - name: terraform-apply
       image: ibmcom/pipeline-base-image:2.11
       workingDir: /workspace
@@ -124,3 +126,6 @@ spec:
           value: "/root"
       script: |
         #!/bin/bash
+        ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
+        echo "ibmcloud terraform apply --id $WORKSPACE --force"
+        ibmcloud terraform apply -id $WORKSPACE --json --force
