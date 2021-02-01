@@ -104,7 +104,7 @@ spec:
           echo "Cloning $REPOSITORY";
           rm -rf app;          
           git clone -q -b $BRANCH $REPOSITORY;
-    - name: PLAN
+    - name: terraform-plan
       image: ibmcom/pipeline-base-image:2.11
       workingDir: /workspace
       env:
@@ -122,7 +122,7 @@ spec:
           value: "/root"
       script: |
         #!/bin/bash
-    - name: APPLY
+    - name: terraform-apply
       image: ibmcom/pipeline-base-image:2.11
       workingDir: /workspace
       env:
