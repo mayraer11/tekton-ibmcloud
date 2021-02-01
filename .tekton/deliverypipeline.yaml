@@ -87,11 +87,33 @@ spec:
         - set -e -o pipefail;
           echo "Cloning $REPOSITORY";
           git clone -q -b $BRANCH $REPOSITORY;
+    - name: terraform-update
+      image: ibmcom/pipeline-base-image:2.11
+      workingDir: /workspace
+      env:
+        - name: WORKSPACE_ID
+          valueFrom:
+              configMapKeyRef:
+                name: environment-properties
+                key: workspace
+        - name: IBMCLOUD_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: secure-properties
+              key: ibmcloud-api-key
+        - name: HOME
+          value: "/root"
+      script: |
+        #!/bin/bash
+        ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
+        WORKSPACE=$(ibmcloud terraform workspace get -i $WORKSPACE_ID --json)
+        echo $WORKSPACE > workspace.json
+        ibmcloud terraform workspace update --id $WORKSPACE_ID --file workspace.json
     - name: terraform-plan
       image: ibmcom/pipeline-base-image:2.11
       workingDir: /workspace
       env:
-        - name: WORKSPACE
+        - name: WORKSPACE_ID
           valueFrom:
               configMapKeyRef:
                 name: environment-properties
@@ -106,13 +128,13 @@ spec:
       script: |
         #!/bin/bash
         ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
-        echo "ibmcloud terraform plan --id $WORKSPACE"
-        ibmcloud terraform plan -id $WORKSPACE --json
+        echo "ibmcloud terraform plan --id $WORKSPACE_ID"
+        ibmcloud terraform plan -id $WORKSPACE_ID --json
     - name: terraform-apply
       image: ibmcom/pipeline-base-image:2.11
       workingDir: /workspace
       env:
-        - name: WORKSPACE
+        - name: WORKSPACE_ID
           valueFrom:
               configMapKeyRef:
                 name: environment-properties
@@ -127,5 +149,5 @@ spec:
       script: |
         #!/bin/bash
         ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
-        echo "ibmcloud terraform apply --id $WORKSPACE --force"
-        ibmcloud terraform apply -id $WORKSPACE --json --force
+        echo "ibmcloud terraform apply --id $WORKSPACE_ID --force"
+        ibmcloud terraform apply -id $WORKSPACE_ID --json --force
