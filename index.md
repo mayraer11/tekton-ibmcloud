@@ -102,7 +102,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Seleccione Tekton como Tipo de conducto.
         - Dar click en el boton Crear Integración.
 
-<img src="images/toolchain.png" width="700" height="150">
+<img src="images/toolchain.png">
 
 Tekton en IBM Delivery Pipeline
 
