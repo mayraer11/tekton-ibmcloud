@@ -4,9 +4,11 @@
 Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo uso de IBM Continuos Delivery y IBM Toolchain. con la finalidad de construir y desplegar una aplicación nodejs en cloud foundry, asimismo comprendera los conceptos necesarios para crear sus propios pipelines con tekton.
 
 #### **Requisitos Previos**
-- Contar con una cuenta en [IBMCloud](https://cloud.ibm.com/)
-- Contar con una cuenta en [GitHub](http://github.com/)
-- Contar con una cuenta de [Slack](https://slack.com/) y tener un canal creado.
+
+Contar con una cuenta en:
+- [IBMCloud](https://cloud.ibm.com/)
+- [GitHub](http://github.com/)
+- [Slack](https://slack.com/) y tener un canal creado.
 
 > [!TIP]
 > Al iniciar este tutorial debe estar logueado en las 3 cuentas mencionadas con anterioridad para facilitar la implementación.
@@ -114,7 +116,9 @@ Como podemos visualizar en el siguiente imagen tekton nos permitira crear recurs
 
 Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y versionados dentro de una carpeta tekton en el repositorio creado anteriormente.
 
-1. Configurando IBM Delivery Pipeline.
+1. Configuración de Schematics
+
+1. Actualizar el archivo deliverypipeline.yaml con el siguiente contenido:
 
     - Creación de EventListener: Permite procesar eventos entrantes de forma declarativa.
 
@@ -184,6 +188,8 @@ Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y
                 - name: repository
                   value: $(params.repository)
         ```
+
+1. Configurar IBM Delivery Pipeline
 
 
 #### **Resumen**
