@@ -26,13 +26,14 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Ingresar un nombre para el repositorio.
         - Seleccionar si desea que sea publico o privado.
         - dar click en *Create repository*
-        <img src="images/createrepo.gif" width="400" height="350" style="vertical-align:middle;margin:0px 50px">
+        <img src="images/createrepo.gif" width="400" height="350">
 
     - Para poder integrar slack a ibm toolchain vamos a requerir crear una aplicación dentro de slack de la siguiente forma:
         - Ingrese [aqui](https://api.slack.com/apps)
         - De click en el boton Create New App
         - Ingrese un nombre para su app
         - De click en el boton Create App
+         <img src="images/createapp.gif" width="400" height="300">
     - Una vez creada la aplicacion del paso anterior procederemos a crear un webhook de la siguiente forma:
         - Ingresamos a la seccion de *información basica* de la aplicación creada anteriormente.
         - Seleccionamos Incoming WebHooks.
@@ -40,6 +41,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - en la parte inferior damos click en el boton Add New Webhook to Workspace.
         - Seleccionamos el canal de nuestra preferencia.
         - Copiamos el Webhook URL en un lugar seguro.
+        <img src="images/createwebhook.gif" width="400" height="300">
 1. Creación de Key Protect
 
     - Ingrese [aqui](https://cloud.ibm.com/catalog/services/key-protect)
