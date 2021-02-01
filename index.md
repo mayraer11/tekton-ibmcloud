@@ -77,13 +77,12 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Seleccionar la URL de nuestro repositorio (creado en el paso 1).
         - Marcar ambos checks para habilitar el seguimiento.
         - Dar click en el boton *Crear Integración*.
-    - Slack
+    - IBM Delivery Pipeline
         - Dar click en *añadir herramienta*
-        - Buscar *Slack* y seleccionar.
-        - Ingrese la URL de WebHook (obtenido en el paso 1)
-        - Ingrese el nombre de su canal de slack.
-        - Ingrese el nombre de su equipo de slack.
-        - Dar click en el boton *Crear Integración*.
+        - Buscar Delivery Pipeline y seleccionar.
+        - Ingrese un nombre.
+        - Seleccione Tekton como Tipo de conducto.
+        - Dar click en el boton Crear Integración.
     - KeyProtect
         - Dar click en *añadir herramienta*
         - Buscar KeyProtect y seleccionar.
@@ -95,12 +94,15 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Dar click en *añadir herramienta*
         - Buscar DevOps Insights y seleccionar.
         - Dar click en el boton Crear Integración.
-    - IBM Delivery Pipeline
+    - Slack
         - Dar click en *añadir herramienta*
-        - Buscar Delivery Pipeline y seleccionar.
-        - Ingrese un nombre.
-        - Seleccione Tekton como Tipo de conducto.
-        - Dar click en el boton Crear Integración.
+        - Buscar *Slack* y seleccionar.
+        - Ingrese la URL de WebHook (obtenido en el paso 1)
+        - Ingrese el nombre de su canal de slack.
+        - Ingrese el nombre de su equipo de slack.
+        - Dar click en el boton *Crear Integración*.
+
+
 
 <img src="images/toolchain.png">
 
