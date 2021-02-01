@@ -109,6 +109,7 @@ spec:
         WORKSPACE=$(ibmcloud terraform workspace get -i $WORKSPACE_ID --json)
         echo $WORKSPACE > workspace.json
         ibmcloud terraform workspace update --id $WORKSPACE_ID --file workspace.json
+        sleep 10
     - name: terraform-plan
       image: ibmcom/pipeline-base-image:2.11
       workingDir: /workspace
@@ -130,6 +131,7 @@ spec:
         ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
         echo "ibmcloud terraform plan --id $WORKSPACE_ID"
         ibmcloud terraform plan -id $WORKSPACE_ID --json
+        sleep 10
     - name: terraform-apply
       image: ibmcom/pipeline-base-image:2.11
       workingDir: /workspace
@@ -151,3 +153,4 @@ spec:
         ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
         echo "ibmcloud terraform apply --id $WORKSPACE_ID --force"
         ibmcloud terraform apply -id $WORKSPACE_ID --json --force
+        sleep 10
