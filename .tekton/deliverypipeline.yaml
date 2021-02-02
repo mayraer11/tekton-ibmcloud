@@ -68,25 +68,6 @@ spec:
   - name: task-pvc
     mountPath: /workspace
   steps:
-    - name: clone-repo
-      image: alpine/git:v2.26.2
-      workingDir: workspace
-      env:
-        - name: REPOSITORY
-          valueFrom:
-              configMapKeyRef:
-                name: environment-properties
-                key: repository
-        - name: BRANCH
-          valueFrom:
-              configMapKeyRef:
-                name: environment-properties
-                key: branch
-      command: ["/bin/sh", "-c"]
-      args:
-        - set -e -o pipefail;
-          echo "Cloning $REPOSITORY";
-          git clone -q -b $BRANCH $REPOSITORY;
     - name: terraform-update
       image: ibmcom/pipeline-base-image:2.11
       workingDir: /workspace

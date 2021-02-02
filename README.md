@@ -1,13 +1,19 @@
 # Desplegando Aplicaciones con IBM DevOps
 
 #### **Introducción**
-Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo uso de IBM Continuos Delivery y IBM Toolchain. con la finalidad de construir y desplegar una aplicación nodejs en cloud foundry, asimismo comprendera los conceptos necesarios para crear sus propios pipelines con tekton.
+Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo uso de IBM Delivery pipeline y IBM Toolchain. con la finalidad de desplegar una aplicación en nodejs con infraestructura como codigo (terraform).
+
+Asimismo comprendera los conceptos necesarios para crear sus propios pipelines con tekton.
+
+tekton nos permitira crear recursos dentro del cluster publico gestionado por IBM para poder ejecutar los pasos indicados en el pipeline.
+
+![Flow Tekton](images/tekton.png?raw=true "Flow Tekton")
 
 #### **Requisitos Previos**
 
 Contar con una cuenta en:
 - [IBMCloud](https://cloud.ibm.com/)
-- [GitHub](http://github.com/)
+- [GitHub](http://github.com/) y tener una SSH keys asociada a su cuenta.
 - [Slack](https://slack.com/) y tener un canal creado.
 
 > [!TIP]
@@ -28,14 +34,15 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Ingresar un nombre para el repositorio.
         - Seleccionar si desea que sea publico o privado.
         - dar click en *Create repository*
-        <img src="images/createrepo.gif" width="400" height="350">
+        - <img src="images/createrepo.gif" width="400" height="350">
 
     - Para poder integrar slack a ibm toolchain vamos a requerir crear una aplicación dentro de slack de la siguiente forma:
         - Ingrese [aqui](https://api.slack.com/apps)
         - De click en el boton Create New App
         - Ingrese un nombre para su app
         - De click en el boton Create App
-         <img src="images/createapp.gif" width="400" height="300">
+        - <img src="images/createapp.gif" width="400" height="300">
+
     - Una vez creada la aplicacion del paso anterior procederemos a crear un webhook de la siguiente forma:
         - Ingresamos a la seccion de *información basica* de la aplicación creada anteriormente.
         - Seleccionamos Incoming WebHooks.
@@ -43,7 +50,8 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - en la parte inferior damos click en el boton Add New Webhook to Workspace.
         - Seleccionamos el canal de nuestra preferencia.
         - Copiamos el Webhook URL en un lugar seguro.
-        <img src="images/createwebhook.gif" width="400" height="300">
+        - <img src="images/createwebhook.gif" width="400" height="300">
+
 1. Creación de Key Protect
 
     - Ingrese [aqui](https://cloud.ibm.com/catalog/services/key-protect)
@@ -103,24 +111,23 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Ingrese el nombre de su canal de slack.
         - Ingrese el nombre de su equipo de slack.
         - Dar click en el boton *Crear Integración*.
-
-
-
-<img src="images/toolchain.png">
-
-Tekton en IBM Delivery Pipeline
-
-Como podemos visualizar en el siguiente imagen tekton nos permitira crear recursos dentro del cluster publico gestionado por IBM para poder ejecutar los pasos indicados en el pipeline.
-
-![Flow Tekton](images/tekton.png?raw=true "Flow Tekton")
-
-Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y versionados dentro de una carpeta tekton en el repositorio creado anteriormente.
+  <img src="images/toolchain.png">
 
 1. Configuración de Schematics
 
-1. Actualizar el archivo deliverypipeline.yaml con el siguiente contenido:
 
-    - Creación de EventListener: Permite procesar eventos entrantes de forma declarativa.
+
+1. Clonación de Repositorio y creación derectorio.
+
+            ```bash
+            .
+            ├── .tekton
+            │   ├── deliverypipeline.yaml
+            ```
+
+1. Crear el archivo deliverypipeline.yaml con el contenido yml indicado:
+
+    - EventListener: Permite procesar eventos entrantes de forma declarativa, para motivos de la demo el evento entrante sera un cambio en el repositorio.
 
         ```yml
         apiVersion: tekton.dev/v1beta1
@@ -135,20 +142,16 @@ Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y
                 name: triggertemplate
         ```
 
-    - Creación de Trigger binding: Permite la capturar campos de un evento y almacenarlos como parametros.
+    - Trigger binding: Permite la capturar campos de un evento y almacenarlos como parametros, para motivos de la demo solo sera declarado.
         
         ```yml
         ApiVersion: tekton.dev/v1beta1
         kind: TriggerBinding
         metadata:
           name: triggerbinding
-        spec:
-          params:
-            - name: repository
-              value: URL
         ```
 
-    - Creacion de Trigger Template: Es un modelo base que puede ser reutilizable.
+    - Trigger Template: Es un modelo base que puede ser reutilizable, para motivos de la demo se incluira la declaracion de un volumen persistente y la invocación al pipeline.
 
         
         ```yml
@@ -156,15 +159,11 @@ Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y
         kind: TriggerTemplate
         metadata:
           name: triggertemplate
-        spec:
-          params:
-            - name: repository
-              description: Repositorio GIT
           resourcetemplates:
             - apiVersion: v1
               kind: PersistentVolumeClaim
               metadata:
-                name: pipelinerun-$(uid)-pvc2
+                name: pipelinerun-$(uid)-pvc
               spec:
                 resources:
                   requests:
@@ -183,10 +182,109 @@ Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y
                 workspaces:
                   - name: pipeline-pvc
                     persistentVolumeClaim:
-                      claimName: pipelinerun-$(uid)-pvc2
-                params:
-                - name: repository
-                  value: $(params.repository)
+                      claimName: pipelinerun-$(uid)-pvc
+        ```
+
+    - Pipeline: Contiene un conjunto de tareas a ejecutar, para motivos de la demo invocara a una sola tarea.
+
+        
+        ```yml
+        apiVersion: tekton.dev/v1beta1
+        kind: Pipeline
+        metadata:
+          name: pipeline
+        spec:
+          workspaces:
+          - name: pipeline-pvc
+          tasks:
+            - name: deploy-terraform-task
+              taskRef:
+                name: terraform-task
+              workspaces:
+              - name: task-pvc
+                workspace: pipeline-pvc 
+        ```
+
+    - Task: Contiene un conjunto de pasos a ejecutar, para motivos de la demo, contendra 3 pasos especificos requeridos por schematics para ejecutar las plantillas terraform.
+
+        
+        ```yml
+        apiVersion: tekton.dev/v1beta1
+        kind: Task
+        metadata:
+          name: terraform-task
+        spec:
+          workspaces:
+          - name: task-pvc
+            mountPath: /workspace
+          steps:
+            - name: terraform-update
+              image: ibmcom/pipeline-base-image:2.11
+              workingDir: /workspace
+              env:
+                - name: WORKSPACE_ID
+                  valueFrom:
+                      configMapKeyRef:
+                        name: environment-properties
+                        key: workspace
+                - name: IBMCLOUD_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: secure-properties
+                      key: ibmcloud-api-key
+                - name: HOME
+                  value: "/root"
+              script: |
+                #!/bin/bash
+                ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
+                WORKSPACE=$(ibmcloud terraform workspace get -i $WORKSPACE_ID --json)
+                echo $WORKSPACE > workspace.json
+                ibmcloud terraform workspace update --id $WORKSPACE_ID --file workspace.json
+                sleep 10
+            - name: terraform-plan
+              image: ibmcom/pipeline-base-image:2.11
+              workingDir: /workspace
+              env:
+                - name: WORKSPACE_ID
+                  valueFrom:
+                      configMapKeyRef:
+                        name: environment-properties
+                        key: workspace
+                - name: IBMCLOUD_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: secure-properties
+                      key: ibmcloud-api-key
+                - name: HOME
+                  value: "/root"
+              script: |
+                #!/bin/bash
+                ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
+                echo "ibmcloud terraform plan --id $WORKSPACE_ID"
+                ibmcloud terraform plan -id $WORKSPACE_ID --json
+                sleep 10
+            - name: terraform-apply
+              image: ibmcom/pipeline-base-image:2.11
+              workingDir: /workspace
+              env:
+                - name: WORKSPACE_ID
+                  valueFrom:
+                      configMapKeyRef:
+                        name: environment-properties
+                        key: workspace
+                - name: IBMCLOUD_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: secure-properties
+                      key: ibmcloud-api-key
+                - name: HOME
+                  value: "/root"
+              script: |
+                #!/bin/bash
+                ibmcloud login --apikey $IBMCLOUD_API_KEY -a "https://cloud.ibm.com" --no-region
+                echo "ibmcloud terraform apply --id $WORKSPACE_ID --force"
+                ibmcloud terraform apply -id $WORKSPACE_ID --json --force
+                sleep 10
         ```
 
 1. Configurar IBM Delivery Pipeline
@@ -194,5 +292,3 @@ Los siguientes bloques de codigo deberan ser copiados dentro de un archivo yml y
 
 #### **Resumen**
 Este tutorial le ha ayudado a comprender y configurar su primer pipeline con IBM DevOps Ecosystem, comprendiendo los compenentes necesarios para trabajar con tekton, permitiendo asi agilizar sus despliegues de infraestructura con terraform.
-
-Aqui podra encontrar los archivos creados durante la ejecución de este tutorial.
