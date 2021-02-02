@@ -119,11 +119,11 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 1. Clonación de Repositorio y creación derectorio.
 
-            ```bash
-            .
-            ├── .tekton
-            │   ├── deliverypipeline.yaml
-            ```
+    ```bash
+    .
+    ├── .tekton
+    │   ├── deliverypipeline.yaml
+    ```
 
 1. Crear el archivo deliverypipeline.yaml con el contenido yml indicado:
 
