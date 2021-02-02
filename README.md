@@ -1,7 +1,7 @@
-# Desplegando Aplicaciones con IBM DevOps
+# Desplegando Aplicaciones con IBM DevOps Ecosystem
 
 #### **Introducción**
-Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo uso de IBM Delivery pipeline y IBM Toolchain. con la finalidad de desplegar una aplicación en Cloud Foundry con infraestructura como codigo (terraform).
+Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo uso de IBM Delivery pipeline, IBM Toolchain y Schematics. con la finalidad de desplegar una aplicación en Cloud Foundry utilizado infraestructura como codigo (terraform).
 
 Asimismo comprendera los conceptos necesarios para crear sus propios pipelines con tekton.
 
