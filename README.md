@@ -115,10 +115,12 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 1. Configuración de Schematics
 
-    - Seleccionamos la pestaña Valores
+    - Dentro de workspace de schematics, seleccionamos la pestaña Valores
     - Ingresamos la siguiente URL (contiene plantilla terraform)
     - Seleccionamos la versión 12 de terraform
     - Dar click en el boton *Guardar Información de plantilla*.
+    - <img src="images/configschematics.gif" width="400" height="300">
+
 
 
 1. Clonación de Repositorio y creación derectorio.
