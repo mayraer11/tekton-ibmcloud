@@ -139,7 +139,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 1. Actualizar el deliverypipeline.yaml con el contenido yml de cada recurso:
 
-    - **EventListener**: Permite procesar eventos entrantes de forma declarativa, para motivos de la demo el evento entrante sera un cambio en el repositorio. 
+    - **EventListener**: Permite procesar eventos entrantes de forma declarativa, para motivos de la demo el evento entrante sera un cambio en el repositorio configurado en la interfaz de Delivery pipeline.
 
         ```yml
         #[Copiar el siguiente fragmento de codigo]
@@ -158,6 +158,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
     - **Trigger binding**: Permite la capturar campos de un evento y almacenarlos como parametros, para motivos de la demo solo sera declarado.
         
         ```yml
+        #[Copiar el siguiente fragmento de codigo]
         ApiVersion: tekton.dev/v1beta1
         kind: TriggerBinding
         metadata:
@@ -168,6 +169,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
         
         ```yml
+        #[Copiar el siguiente fragmento de codigo]
         apiVersion: tekton.dev/v1beta1
         kind: TriggerTemplate
         metadata:
@@ -202,6 +204,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
         
         ```yml
+        #[Copiar el siguiente fragmento de codigo]
         apiVersion: tekton.dev/v1beta1
         kind: Pipeline
         metadata:
@@ -222,6 +225,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
         
         ```yml
+        #[Copiar el siguiente fragmento de codigo]
         apiVersion: tekton.dev/v1beta1
         kind: Task
         metadata:
