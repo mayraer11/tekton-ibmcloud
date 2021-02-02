@@ -5,7 +5,7 @@ Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo 
 
 Asimismo comprendera los conceptos necesarios para crear sus propios pipelines con tekton.
 
-tekton nos permitira crear recursos dentro del cluster publico gestionado por IBM para poder ejecutar los pasos indicados en el pipeline.
+para motivos del tutorial tekton nos permitira crear recursos dentro del cluster publico gestionado por IBM para poder ejecutar los pasos indicados en el pipeline.
 
 ![Flow Tekton](images/tekton.png?raw=true "Flow Tekton")
 
@@ -115,15 +115,27 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 1. Configuración de Schematics
 
+    - Seleccionamos la pestaña Valores
+    - Ingresamos la URL siguiente url 
+    - Seleccionamos la versión 12 de terraform
+    - Dar click en el boton *Guardar Información de plantilla*.
 
 
 1. Clonación de Repositorio y creación derectorio.
 
-    ```bash
-    .
-    ├── .tekton
-    │   ├── deliverypipeline.yaml
-    ```
+    - Ejecutar los siguientes comandos git (linea por linea)
+
+
+
+    - Crear una carpeta .tekton e incluir un archivo yml
+        
+        ```bash
+        .
+        ├── .tekton
+        │   ├── deliverypipeline.yaml
+        ```
+        
+
 
 1. Crear el archivo deliverypipeline.yaml con el contenido yml indicado:
 
