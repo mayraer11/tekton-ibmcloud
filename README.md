@@ -137,9 +137,9 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         
 
 
-1. Crear el archivo deliverypipeline.yaml con el contenido yml indicado:
+1. Actualizar el deliverypipeline.yaml con el contenido yml de cada recurso:
 
-    - EventListener: Permite procesar eventos entrantes de forma declarativa, para motivos de la demo el evento entrante sera un cambio en el repositorio.
+    - **EventListener**: Permite procesar eventos entrantes de forma declarativa, para motivos de la demo el evento entrante sera un cambio en el repositorio.
 
         ```yml
         apiVersion: tekton.dev/v1beta1
@@ -154,7 +154,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
                 name: triggertemplate
         ```
 
-    - Trigger binding: Permite la capturar campos de un evento y almacenarlos como parametros, para motivos de la demo solo sera declarado.
+    - **Trigger binding**: Permite la capturar campos de un evento y almacenarlos como parametros, para motivos de la demo solo sera declarado.
         
         ```yml
         ApiVersion: tekton.dev/v1beta1
@@ -163,7 +163,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
           name: triggerbinding
         ```
 
-    - Trigger Template: Es un modelo base que puede ser reutilizable, para motivos de la demo se incluira la declaracion de un volumen persistente y la invocación al pipeline.
+    - **Trigger Template**: Es un modelo base que puede ser reutilizable, para motivos de la demo se incluira la declaracion de un volumen persistente y la invocación al pipeline.
 
         
         ```yml
@@ -197,7 +197,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
                       claimName: pipelinerun-$(uid)-pvc
         ```
 
-    - Pipeline: Contiene un conjunto de tareas a ejecutar, para motivos de la demo invocara a una sola tarea.
+    - **Pipeline**: Contiene un conjunto de tareas a ejecutar, para motivos de la demo invocara a una sola tarea.
 
         
         ```yml
@@ -217,7 +217,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
                 workspace: pipeline-pvc 
         ```
 
-    - Task: Contiene un conjunto de pasos a ejecutar, para motivos de la demo, contendra 3 pasos especificos requeridos por schematics para ejecutar las plantillas terraform.
+    - **Task**: Contiene un conjunto de pasos a ejecutar, para motivos de la demo, contendra 3 pasos especificos requeridos por schematics para ejecutar las plantillas terraform.
 
         
         ```yml
