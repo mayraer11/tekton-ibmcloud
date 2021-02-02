@@ -6,7 +6,7 @@ Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo 
 Asimismo, comprendera los conceptos necesarios para crear sus propios pipelines con tekton.
 
 > [!NOTE]
-> para motivos del tutorial tekton nos permitira crear recursos dentro del cluster k8s publico gestionado por IBM en IBMCloud, para poder ejecutar los pasos indicados en el pipeline. ![Flow Tekton](images/tekton.png?raw=true "Flow Tekton")
+> para motivos del tutorial tekton nos permitira crear recursos dentro de un cluster k8s publico gestionado por IBM en IBMCloud, para poder ejecutar los pasos indicados en el pipeline. ![Flow Tekton](images/tekton.png?raw=true "Flow Tekton")
 
 #### **Requisitos Previos**
 
