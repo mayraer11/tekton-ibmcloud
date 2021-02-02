@@ -139,9 +139,10 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 1. Actualizar el deliverypipeline.yaml con el contenido yml de cada recurso:
 
-    - **EventListener**: Permite procesar eventos entrantes de forma declarativa, para motivos de la demo el evento entrante sera un cambio en el repositorio.
+    - **EventListener**: Permite procesar eventos entrantes de forma declarativa, para motivos de la demo el evento entrante sera un cambio en el repositorio. 
 
         ```yml
+        #[Copiar el siguiente fragmento de codigo]
         apiVersion: tekton.dev/v1beta1
         kind: EventListener
         metadata:
