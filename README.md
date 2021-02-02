@@ -1,9 +1,9 @@
 # Desplegando Aplicaciones con IBM DevOps Ecosystem
 
 #### **Introducción**
-Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo uso de IBM Delivery pipeline, IBM Toolchain y Schematics. con la finalidad de desplegar una aplicación en Cloud Foundry utilizado infraestructura como codigo (terraform).
+Este tutorial muestra como configurar un pipeline elaborado con tekton haciendo uso de IBM Delivery pipeline y IBM Toolchain. con la finalidad de desplegar una aplicación en Cloud Foundry utilizado infraestructura como codigo (terraform) y Schematics.
 
-Asimismo comprendera los conceptos necesarios para crear sus propios pipelines con tekton.
+Asimismo, comprendera los conceptos necesarios para crear sus propios pipelines con tekton.
 
 para motivos del tutorial tekton nos permitira crear recursos dentro del cluster publico gestionado por IBM, para poder ejecutar los pasos indicados en el pipeline.
 
@@ -33,6 +33,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         - Seleccionar un propietario.
         - Ingresar un nombre para el repositorio.
         - Seleccionar si desea que sea publico o privado.
+        - Seleccione Add a README file
         - dar click en *Create repository*
         - <img src="images/createrepo.gif" width="400" height="350">
 
@@ -319,8 +320,6 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
     - Seleccionar la rama main
     - Dar click en el boton añadir
     - <img src="images/configdeliverypipeline.gif" width="400" height="300">
-
-
 
 #### **Resumen**
 Este tutorial le ha ayudado a comprender y configurar su primer pipeline con IBM DevOps Ecosystem, comprendiendo los compenentes necesarios para trabajar con tekton, permitiendo asi agilizar sus despliegues de infraestructura con terraform.
