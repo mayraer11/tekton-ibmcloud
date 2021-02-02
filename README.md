@@ -125,9 +125,9 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 
 1. Clonación de Repositorio y creación derectorio.
 
-    - Ejecutar los siguientes comandos git (linea por linea)
+    - Ejecutar el siguiente comando git
 
-
+        `git clone [URL SSH de su repositorio]`
 
     - Crear una carpeta .tekton e incluir un archivo yml
         
@@ -136,8 +136,13 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         ├── .tekton
         │   ├── deliverypipeline.yaml
         ```
-        
+    - Ejecutar los siguientes comandos git (linea por linea) dentro de la carpeta del repositorio.
 
+        `git add .`
+        
+        `git commit -m "primer commit"`
+        
+        `git push origin main`
 
 1. Actualizar el deliverypipeline.yaml con el contenido yml de cada recurso:
 
