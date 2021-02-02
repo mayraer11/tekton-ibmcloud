@@ -116,7 +116,7 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
 1. Configuración de Schematics
 
     - Seleccionamos la pestaña Valores
-    - Ingresamos la URL siguiente url 
+    - Ingresamos la siguiente URL (contiene plantilla terraform)
     - Seleccionamos la versión 12 de terraform
     - Dar click en el boton *Guardar Información de plantilla*.
 
@@ -300,6 +300,14 @@ El tiempo estimado para completar el tutorial es de 60 a 90 minutos.
         ```
 
 1. Configurar IBM Delivery Pipeline
+
+    - Seleccionamos la pestaña Definicios
+    - Dar click en el boton añadir
+    - Seleccionar el repositorio donde se encuentra la carpeta .tekton
+    - Seleccionar la rama main
+    - Dar click en el boton añadir
+    - <img src="images/configdeliverypipeline.gif" width="400" height="300">
+
 
 
 #### **Resumen**
